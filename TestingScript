@@ -1,0 +1,67 @@
+--[[
+    Made by ArasOfficial#8439
+    Security - Version 1.0
+--]]
+
+local EnableSecurity = true
+local ClientAntiKick = true
+local AntiIYAdminKick = true
+local AntiFling = true
+local AntiAFK = true
+local AutoRejoin = true
+local AutoLeave = false
+local AntiLag = false
+
+local Security = Instance.new("ScreenGui")
+Security.Name = "Security"
+Security.Parent = game.CoreGui
+Security.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
+Security.ResetOnSpawn = false
+
+-- Scripts:
+
+local function UONVF_fake_script() -- Security.LocalScript 
+	local script = Instance.new('LocalScript', Security)
+	if EnableSecurity and ClientAntiKick == true then
+		local mt = getrawmetatable(game)
+		local oldmt = mt.index
+		make_writeable(mt)
+
+		mt.index = function(t,i)
+			if i == "Kick" then
+				return nil
+			end
+			return oldmt(t,i)
+		end
+	end
+	
+	if EnableSecurity and AntiIYAdminKick == true then
+		wait(1)
+		print("Checking if Anti_Kick is already running.")
+		wait(2)
+		table.foreach(workspace:GetChildren(),function(a,b) if b.Name=="Anti_Kicklul" then game:GetService("Workspace").Anti_Kicklul:Destroy() end end)
+		wait(1)
+		warn("Initializing Anti Kick...")
+		wait(1.5)
+		Instance.new("BoolValue",workspace).Name="Anti_Kicklul"
+		local AK=math.random(1,2)
+		if AK==1 then
+			game.Workspace.Anti_Kicklul.Value = true
+		elseif AK==2 then
+			game.Workspace.Anti_Kicklul.Value = false
+		end
+		wait(2.5)
+		local AntiKick = game.Workspace.Anti_Kicklul.Value
+		if AntiKick == true then
+			print("Anti kick has loaded and is now running. Took [8] Seconds!")
+		elseif AntiKick == false then
+			print("Anti kick failed to run! Run Script again")
+		end
+		wait(1)
+		if AntiKick ==true then
+			game:GetService("Players").LocalPlayer.Character.Humanoid.Health = 0
+		end
+	end
+	
+end
+coroutine.wrap(UONVF_fake_script)()
